@@ -12,7 +12,6 @@ struct ContentView: View {
             BreathSegment(label: "Rest", time: "0M 30S")
         ])
     @AppStorage("totalTrainingTime") private var totalTrainingTime: Int = 0
-    @State private var isPressed = false
     
     let programs = [
         TrainingProgram(
@@ -148,15 +147,9 @@ struct ContentView: View {
                             Text("Start training")
                                 .font(.custom("AvenirNext-Bold", size: 20))
                                 .padding()
-                                .background(Color.white)
-                                .foregroundColor(.black)
-                                .cornerRadius(20) // Более скругленная кнопка
-                                .shadow(color: .black, radius: 5, x: 2, y: 2)
-                                .scaleEffect(self.isPressed ? 1.1 : 1.0)
-                                .animation(.spring(response: 0.2, dampingFraction: 0.5, blendDuration: 0), value: isPressed)
-                                .onLongPressGesture(minimumDuration: 0.1, maximumDistance: 50) { pressing in
-                                    self.isPressed = pressing
-                                } perform: {}
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
                         }
                         .padding(.bottom, 50)
                     }
@@ -166,62 +159,62 @@ struct ContentView: View {
     }
     
     func formatTime(_ time: Int) -> String {
-            let minutes = time / 60
-            let seconds = time % 60
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
+        let minutes = time / 60
+        let seconds = time % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
+}
 
-    struct BreathSegmentView: View {
-        var label: String
-        var time: String
-        
-        var body: some View {
-            VStack {
-                Text(label)
-                    .font(.custom("AvenirNext-Medium", size: 25))
+struct BreathSegmentView: View {
+    var label: String
+    var time: String
+    
+    var body: some View {
+        VStack {
+            Text(label)
+                .font(.custom("AvenirNext-Medium", size: 25))
+                .foregroundColor(.white)
+                .shadow(color: .black, radius: 5, x: 1, y: 1)
+            Text(time)
+                .font(.custom("AvenirNext-Medium", size: 20))
+                .foregroundColor(.white)
+                .shadow(color: .black, radius: 5, x: 1, y: 1)
+        }
+        .padding()
+        .background(Color.gray.opacity(0.2))
+        .cornerRadius(10)
+        .frame(minWidth: 100)
+    }
+}
+
+struct TrainingProgramView: View {
+    var name: String
+    var time: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "lungs.fill")
+                .foregroundColor(.gray)
+            VStack(alignment: .leading) {
+                Text(name)
+                    .font(.custom("AvenirNext-Bold", size: 25))
                     .foregroundColor(.white)
                     .shadow(color: .black, radius: 5, x: 1, y: 1)
                 Text(time)
                     .font(.custom("AvenirNext-Medium", size: 20))
                     .foregroundColor(.white)
-                    .shadow(color: .black, radius: 5, x: 1, y: 1)
+                    .shadow(color: .black, radius: 5, x: 2, y: 2)
             }
-            .padding()
-            .background(Color.gray.opacity(0.2))
-            .cornerRadius(10)
-            .frame(minWidth: 100)
+            Spacer()
+            Image(systemName: "rosette")
+                .foregroundColor(.gray)
         }
+        .padding(.vertical, 8)
     }
+}
 
-    struct TrainingProgramView: View {
-        var name: String
-        var time: String
-        
-        var body: some View {
-            HStack {
-                Image(systemName: "lungs.fill")
-                    .foregroundColor(.gray)
-                VStack(alignment: .leading) {
-                    Text(name)
-                        .font(.custom("AvenirNext-Bold", size: 25))
-                        .foregroundColor(.white)
-                        .shadow(color: .black, radius: 5, x: 1, y: 1)
-                    Text(time)
-                        .font(.custom("AvenirNext-Medium", size: 20))
-                        .foregroundColor(.white)
-                        .shadow(color: .black, radius: 5, x: 2, y: 2)
-                }
-                Spacer()
-                Image(systemName: "rosette")
-                    .foregroundColor(.gray)
-            }
-            .padding(.vertical, 8)
-        }
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
-
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
-        }
-    }
+}
